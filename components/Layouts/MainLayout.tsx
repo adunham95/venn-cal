@@ -3,13 +3,14 @@ import { Nav } from '../nav';
 
 export interface IMainLayout {
   children: React.ReactNode;
+  HeaderSlot?: React.ReactNode;
 }
 
 const MainLayout = (props: IMainLayout) => {
-  const { children } = props;
+  const { children, HeaderSlot } = props;
   return (
     <>
-      <Nav />
+      <Nav Slot1={HeaderSlot} />
       <div>{children}</div>
     </>
   );
