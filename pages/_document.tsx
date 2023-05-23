@@ -1,6 +1,4 @@
-
 import { Html, Head, Main, NextScript } from 'next/document';
-import { GLOBALS } from '../lib/const';
 
 export default function Document() {
   return (

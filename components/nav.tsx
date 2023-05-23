@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Logo } from './logo';
 import { NavLink } from './navLink';
-import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 
 const links = [
@@ -32,22 +31,22 @@ interface INavProps {
 
 export const Nav = (props: INavProps) => {
   const { Slot1 } = props;
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [profileExpanded, setProfileExpanded] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  useEffect(()=>{
+  useEffect(() => {
     switch (status) {
       case 'authenticated':
-        setIsLoggedIn(true)
+        setIsLoggedIn(true);
         break;
-    
+
       default:
-        setIsLoggedIn(false)
+        setIsLoggedIn(false);
         break;
     }
-  },[status])
+  }, [status]);
 
   return (
     <>
@@ -74,51 +73,50 @@ export const Nav = (props: INavProps) => {
                 ))}
               </div>
             </div>
-            {
-              isLoggedIn && 
-            <div className="hidden sm:ml-6 sm:flex sm:items-center">
-              {/* <!-- Profile dropdown --> */}
-              <div className="relative ml-3">
-                <div>
-                  <button
-                    type="button"
-                    className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                    onClick={() => setProfileExpanded(!profileExpanded)}
-                  >
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="h-8 w-8 rounded-full"
-                      src={session?.user?.image || ""}
-                      alt=""
-                    />
-                  </button>
-                </div>
-                <div
-                  className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
-                    profileExpanded ? '' : 'hidden'
-                  }`}
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="user-menu-button"
-                  tabIndex={-1}
-                >
-                  {profileLinks.map((link) => (
-                    <NavLink
-                      key={`desktop-${link.path}`}
-                      href={link.path}
-                      activeClassName="block px-4 py-2 text-sm text-gray-700 bg-primary-light text-dark"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-light hover:bg-opacity-40"
+            {isLoggedIn && (
+              <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                {/* <!-- Profile dropdown --> */}
+                <div className="relative ml-3">
+                  <div>
+                    <button
+                      type="button"
+                      className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      id="user-menu-button"
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      onClick={() => setProfileExpanded(!profileExpanded)}
                     >
-                      {link.label}
-                    </NavLink>
-                  ))}
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src={session?.user?.image || ''}
+                        alt=""
+                      />
+                    </button>
+                  </div>
+                  <div
+                    className={`absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ${
+                      profileExpanded ? '' : 'hidden'
+                    }`}
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="user-menu-button"
+                    tabIndex={-1}
+                  >
+                    {profileLinks.map((link) => (
+                      <NavLink
+                        key={`desktop-${link.path}`}
+                        href={link.path}
+                        activeClassName="block px-4 py-2 text-sm text-gray-700 bg-primary-light text-dark"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-light hover:bg-opacity-40"
+                      >
+                        {link.label}
+                      </NavLink>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-            }
+            )}
             <div className="-mr-2 flex items-center sm:hidden">
               {/* <!-- Mobile menu button --> */}
               <button
@@ -181,41 +179,39 @@ export const Nav = (props: INavProps) => {
               </NavLink>
             ))}
           </div>
-          {
-            isLoggedIn &&
-          
-          <div className="border-t border-gray-200 pb-3 pt-4">
-            <div className="flex items-center px-4">
-              <div className="flex-shrink-0">
-                <img
-                  className="h-10 w-10 rounded-full"
-                  src={session.user.image}
-                  alt=""
-                />
+          {isLoggedIn && (
+            <div className="border-t border-gray-200 pb-3 pt-4">
+              <div className="flex items-center px-4">
+                <div className="flex-shrink-0">
+                  <img
+                    className="h-10 w-10 rounded-full"
+                    src={session.user.image}
+                    alt=""
+                  />
+                </div>
+                <div className="ml-3">
+                  <div className="text-base font-medium text-gray-800">
+                    {session.user.name}
+                  </div>
+                  <div className="text-sm font-medium text-gray-500">
+                    {session.user.email}
+                  </div>
+                </div>
               </div>
-              <div className="ml-3">
-                <div className="text-base font-medium text-gray-800">
-                  {session.user.name}
-                </div>
-                <div className="text-sm font-medium text-gray-500">
-                  {session.user.email}
-                </div>
+              <div className="mt-3 space-y-1">
+                {profileLinks.map((link) => (
+                  <NavLink
+                    key={`mobile-${link.path}`}
+                    href={link.path}
+                    activeClassName="border-primary-dark bg-primary-light bg-opacity-30 text-primary-dark block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
+                    className="border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800 block border-l-4 py-2 pl-3 pr-4 text-base font-medium "
+                  >
+                    {link.label}
+                  </NavLink>
+                ))}
               </div>
             </div>
-            <div className="mt-3 space-y-1">
-              {profileLinks.map((link) => (
-                <NavLink
-                  key={`mobile-${link.path}`}
-                  href={link.path}
-                  activeClassName="border-primary-dark bg-primary-light bg-opacity-30 text-primary-dark block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
-                  className="border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800 block border-l-4 py-2 pl-3 pr-4 text-base font-medium "
-                >
-                  {link.label}
-                </NavLink>
-              ))}
-            </div>
-          </div>
-}
+          )}
         </div>
       </nav>
       <div data-slot="slot1">{Slot1}</div>
