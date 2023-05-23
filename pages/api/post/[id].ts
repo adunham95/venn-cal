@@ -1,18 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react';
 import prisma from '../../../lib/prisma'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]';
 
 
 // DELETE /api/post/:id
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const postId = req.query.id;
 
-  const session = await getSession({ req })
+  const session = await getServerSession(req, res, authOptions);
 
   if (req.method === "DELETE") {
     if (session) {
       const post = await prisma.post.delete({
-        where: { id: Number(postId) },
+        where: { id:postId as string },
       });
       res.json(post);
     } else {

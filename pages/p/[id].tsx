@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const post = await prisma.post.findUnique({
     where: {
-      id: Number(params?.id) || -1,
+      id: params?.id as string || "",
     },
     include: {
       author: {

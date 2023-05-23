@@ -6,7 +6,6 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>{GLOBALS.PAGE_TITLE}</title>
         <link
           rel="apple-touch-icon"
           sizes="180x180"
