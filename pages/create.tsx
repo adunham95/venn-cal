@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import Router from 'next/router';
+import MainLayout from '../components/Layouts/MainLayout';
 
 const Draft: React.FC = () => {
   const [title, setTitle] = useState('');
@@ -22,7 +23,7 @@ const Draft: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <MainLayout>
       <div>
         <form onSubmit={submitData}>
           <h1>New Draft</h1>
@@ -74,7 +75,7 @@ const Draft: React.FC = () => {
           margin-left: 1rem;
         }
       `}</style>
-    </Layout>
+    </MainLayout>
   );
 };
 
