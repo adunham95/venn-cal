@@ -1,24 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Logo } from './logo';
 import { NavLink } from './navLink';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 const links = [
   {
     path: '/',
     label: 'Home',
   },
-  {
-    path: '/api/auth/signin',
-    label: 'Login',
-  },
 ];
 
 const profileLinks = [
-  {
-    path: '/api/auth/signin',
-    label: 'Login',
-  },
   {
     path: '/profile',
     label: 'Profile',
@@ -73,7 +66,7 @@ export const Nav = (props: INavProps) => {
                 ))}
               </div>
             </div>
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 {/* <!-- Profile dropdown --> */}
                 <div className="relative ml-3">
@@ -103,6 +96,12 @@ export const Nav = (props: INavProps) => {
                     aria-labelledby="user-menu-button"
                     tabIndex={-1}
                   >
+                    <button
+                      className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-primary-light hover:bg-opacity-40"
+                      onClick={() => signOut()}
+                    >
+                      Log Out
+                    </button>
                     {profileLinks.map((link) => (
                       <NavLink
                         key={`desktop-${link.path}`}
@@ -115,6 +114,15 @@ export const Nav = (props: INavProps) => {
                     ))}
                   </div>
                 </div>
+              </div>
+            ) : (
+              <div className="sm:-my-px sm:ml-6 sm:flex sm:space-x-8 hidden">
+                <Link
+                  href="/api/auth/signin"
+                  className=" text-gray-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 text-sm font-medium"
+                >
+                  Log in <span aria-hidden="true">&rarr;</span>
+                </Link>
               </div>
             )}
             <div className="-mr-2 flex items-center sm:hidden">
@@ -179,7 +187,7 @@ export const Nav = (props: INavProps) => {
               </NavLink>
             ))}
           </div>
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <div className="border-t border-gray-200 pb-3 pt-4">
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
@@ -199,6 +207,12 @@ export const Nav = (props: INavProps) => {
                 </div>
               </div>
               <div className="mt-3 space-y-1">
+                <button
+                  className="border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800 block border-l-4 py-2 pl-3 pr-4 text-base font-medium "
+                  onClick={() => signOut()}
+                >
+                  Log Out
+                </button>
                 {profileLinks.map((link) => (
                   <NavLink
                     key={`mobile-${link.path}`}
@@ -211,6 +225,14 @@ export const Nav = (props: INavProps) => {
                 ))}
               </div>
             </div>
+          ) : (
+            <NavLink
+              href="/api/auth/signin"
+              activeClassName="border-primary-dark bg-primary-light bg-opacity-30 text-primary-dark block border-l-4 py-2 pl-3 pr-4 text-base font-medium"
+              className="border-transparent text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-800 block border-l-4 py-2 pl-3 pr-4 text-base font-medium "
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </NavLink>
           )}
         </div>
       </nav>
