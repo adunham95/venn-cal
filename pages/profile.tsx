@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '../components/Layouts/MainLayout';
 import { getSession, useSession } from 'next-auth/react';
 import { GetServerSideProps } from 'next';
+import TextInput from '../components/Inputs/textInput';
 
 const Profile = () => {
   const { data: session } = useSession();
+
+  const [name, setName] = useState('');
 
   if (!session) {
     return (
@@ -17,7 +20,14 @@ const Profile = () => {
   return (
     <MainLayout>
       <h1>My Profile</h1>
-      <div>My Profile</div>
+      <div>
+        <TextInput
+          id="profile-name"
+          label="Name"
+          value={name}
+          onChange={setName}
+        />
+      </div>
     </MainLayout>
   );
 };

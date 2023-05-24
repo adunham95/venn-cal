@@ -10,7 +10,12 @@ interface ITextInputProps {
   helperText?: string;
   errorText?: string;
   hasError?: boolean;
+  value: string;
   onChange: (text: string, name: string, e: React.ChangeEvent) => void;
+  className?: string;
+  labelClassName?: string;
+  inputClassName?: string;
+  ariaDescription?: string;
 }
 
 const TextInput = (props: ITextInputProps) => {
@@ -24,13 +29,21 @@ const TextInput = (props: ITextInputProps) => {
     helperText,
     errorText,
     hasError = false,
+    className = '',
+    labelClassName = '',
+    inputClassName = '',
+    ariaDescription,
+    value,
   } = props;
   return (
-    <div>
+    <div className={className}>
       {label && (
         <label
           htmlFor={id || name}
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className={twMerge(
+            'block text-sm font-medium leading-6 text-gray-900',
+            labelClassName,
+          )}
         >
           {label}
         </label>
@@ -40,13 +53,15 @@ const TextInput = (props: ITextInputProps) => {
           type={type}
           name={id || name}
           id={id}
+          value={value}
           className={twMerge(
             'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6',
             hasError &&
               'ring-red-300 placeholder:text-red-300 focus:ring-red-500',
+            inputClassName,
           )}
           placeholder={placeholder}
-          aria-describedby="email-description"
+          aria-describedby={ariaDescription || name || id}
           onChange={(e) => onChange(e.target.value, name || id, e)}
         />
       </div>
